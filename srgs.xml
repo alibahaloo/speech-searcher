@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN" "C:\Users\Ali Bahaloo\Documents\Visual Studio 2010\Projects\Speech_Compare\Speech_Compare\grammar.dtd"[]>
+<!-- the default grammar language is US English -->
+<grammar xmlns="http://www.w3.org/2001/06/grammar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/06/grammar &#xD;&#xA;                             http://www.w3.org/TR/speech-grammar/grammar.xsd" xml:lang="en-US" version="1.0" tag-format="semantics-ms/1.0">
+  <!-- $YesNoCancel._value: string -->
+  <rule id="confirmation" scope="public">
+    <example> yes </example>
+    <example> sure </example>
+    <example> no </example>
+    <example> I don't think so </example>
+    <example> cancel </example>
+    <one-of>
+      <item>
+        <ruleref uri="#Yes" />
+      </item>
+      <item>
+        <ruleref uri="#No_Spell" />
+      </item>
+      <item>
+        <ruleref uri="#No_Candidate" />
+      </item>
+      <item>
+        <ruleref uri="#Cancel" />
+      </item>
+    </one-of>
+    <tag> $ = $$ </tag>
+  </rule>
+  <!-- No_Spell Rule | SemVal = 2 -->
+  <rule id="No_Spell" scope="public">
+    <item>
+      <one-of>
+        <item> spell it </item>
+        <item> spelling </item>
+      </one-of>
+    </item>
+    <tag> $._value = "2"; $._attributes.text = $recognized.text; </tag>
+  </rule>
+  <!-- No_Candidate Rule | SemVal 3 -->
+  <rule id="No_Candidate" scope="public">
+    <item>
+      <one-of>
+        <item> No </item>
+        <item> Nah </item>
+        <item> candidates </item>
+        <item> candidates list </item>
+        <item> list </item>
+        <item> no </item>
+      </one-of>
+    </item>
+    <tag> $._value = "3"; $._attributes.text = $recognized.text; </tag>
+  </rule>
+  <!-- Yes Rule | SemVal = 1-->
+  <rule id="Yes" scope="public">
+    <example> yes </example>
+    <example> yes please </example>
+    <example> correct </example>
+    <example> sure </example>
+    <example> ok </example>
+    <item>
+      <one-of>
+        <item> yes </item>
+        <item> yeah </item>
+        <item> yeh </item>
+        <item> ya </item>
+        <item> yup </item>
+        <item> yep </item>
+        <item> indeed </item>
+        <item> positive </item>
+        <item> ok </item>
+        <item> sure </item>
+        <item> affirmative </item>
+        <item> agreed </item>
+        <item> right </item>
+        <item> correct </item>
+      </one-of>
+      <item repeat="0-1"> please </item>
+    </item>
+    <tag> $._value = "1"; $._attributes.text = $recognized.text; </tag>
+  </rule>
+  <!-- Cancel Rule | SemVal 0 -->
+  <rule id="Cancel" scope="public">
+    <example> cancel </example>
+    <example> wait a minute </example>
+    <example> hold it </example>
+    <example> exit </example>
+    <example> I'm not sure </example>
+    <item>
+      <one-of>
+        <item> wait </item>
+        <item> stop </item>
+        <item>
+          just a
+          <one-of><item> minute </item><item> moment </item></one-of></item>
+        <item>
+          wait a
+          <one-of><item> minute </item><item> moment </item></one-of></item>
+        <item> I'm not sure </item>
+        <item> hold it </item>
+        <item> go back </item>
+        <item> cancel </item>
+        <item> hold on </item>
+        <item> exit </item>
+      </one-of>
+    </item>
+    <tag> $._value = "0"; $._attributes.text = $recognized.text; </tag>
+  </rule>
+  <!-- $No._value: string ("No") -->
+  <rule id="No" scope="public">
+    <example> no </example>
+    <example> negative </example>
+    <example> no I wouldn't </example>
+    <example> I do not </example>
+    <example> I don't think so </example>
+    <one-of>
+      <item>
+        <one-of>
+          <item> no </item>
+          <item> nay </item>
+          <item> nah </item>
+          <item> nope </item>
+          <item> negative </item>
+        </one-of>
+        <item repeat="0-1">
+          I
+          <one-of><item> wouldn't </item><item> would not </item><item> do not </item><item> don't </item><item> don't think so </item></one-of></item>
+      </item>
+      <item>
+        I
+        <one-of><item> wouldn't </item><item> would not </item><item> do not </item><item> don't </item><item> don't think so </item></one-of></item>
+    </one-of>
+    <tag> $._value = "2"; $._attributes.text = $recognized.text; </tag>
+  </rule>
+  <!-- Command List - Initializer -->
+  <rule id="initializer" scope="public">
+    computer search
+    <item><ruleref uri="#lvl2" /></item></rule>
+  <!-- Choices - lvl2 -->
+  <rule id="lvl2" scope="public">
+    <one-of>
+      <item>
+        google <tag> $._value = "http://www.google.com"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        yahoo <tag> $._value = "http://www.yahoo.com"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        wikipedia <tag> $._value = "http://www.wikipedia.com"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        piratebay <tag> $._value = "http://www.wikipedia.com"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        bing <tag> $._value = "http://www.wikipedia.com"; $._attributes.text = $recognized.text; </tag></item>
+    </one-of>
+  </rule>
+  <!-- lvl3 -->
+  <rule id="lvl3" scope="public">
+    <one-of>
+      <item> google </item>
+      <item> yahoo </item>
+      <item> wikipedia </item>
+    </one-of>
+  </rule>
+  <!--  Dictionary | Spelled words are be added here  -->
+  <rule id="dictionary" scope="public">
+    <one-of>
+      <item>cancel</item>
+      <item>spelling</item>
+      <item>apple</item>
+      <item>eppla</item>
+      <item>alpha</item>
+      <item>adam</item>
+      <item>love</item>
+      <item>live</item>
+      <item>life</item>
+      <item>like</item>
+      <item>line</item>
+      <item>book</item>
+      <item>destiny</item>
+      <item>who am i?</item>
+      <item>what is life?</item>
+      <item>who decides my destiny?</item>
+      <item>Avatar</item>
+      <item>Infected Mushroom</item>
+      <item>banana</item>
+      <item>power</item>
+      <item>computer</item>
+      <item>argument from ignorance</item>
+      <item>admission</item>
+      <item>window</item>
+      <item>message</item>
+      <item>shopping</item>
+      <item>command</item>
+      <item>affirmative</item>
+      <item>world</item>
+      <item>long</item>
+      <item>epic</item>
+    </one-of>
+  </rule>
+  <!-- Spelling -->
+  <rule id="spelling" scope="public">
+    <one-of>
+      <item>cancel</item>
+      <item>
+        a as in Alpha <tag> $._value = "A"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        a as in Adam <tag> $._value = "A"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        a as in Apple <tag> $._value = "A"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        B as in Bravo <tag> $._value = "B"; $._attributes.text = $recognized.text;</tag></item>
+      <item>
+        B as in Bill <tag> $._value = "B"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        B as in Buffalo <tag> $._value = "B"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        C as in Charlie <tag> $._value = "C"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        C as in Cathy <tag> $._value = "C"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        C as in Carl <tag> $._value = "C"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        D as in Delta <tag> $._value = "C"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        D as in December <tag> $._value = "D"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        D as in David <tag> $._value = "D"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        E as in Echo <tag> $._value = "E"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        E as in Edger <tag> $._value = "E"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        E as in enter <tag> $._value = "E"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        F as in Frank <tag> $._value = "F"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        F as in Foxtrot <tag> $._value = "F"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        F as in Fancy <tag> $._value = "F"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        G as in google <tag> $._value = "G"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        G as in golf <tag> $._value = "G"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        G as in George <tag> $._value = "G"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        H as in hotel <tag> $._value = "H"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        H as in Henry <tag> $._value = "H"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        H as in helmet <tag> $._value = "H"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        I as in india <tag> $._value = "I"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        I as in Iris <tag> $._value = "I"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        I as in international <tag> $._value = "I"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        J as in John <tag> $._value = "J"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        J as in Juliet <tag> $._value = "J"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        J as in Justice <tag> $._value = "J"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        K as in kilo <tag> $._value = "K"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        K as in Karen <tag> $._value = "K"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        K as in kick <tag> $._value = "K"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        L as in lima <tag> $._value = "L"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        L as in larry <tag> $._value = "L"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        L as in lemon <tag> $._value = "L"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        L as in Luxembourg <tag> $._value = "L"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        M as in Mike <tag> $._value = "M"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        M as in magic <tag> $._value = "M"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        M as in Mickey <tag> $._value = "M"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        N as in November <tag> $._value = "N"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        N as in Nancy <tag> $._value = "N"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        N as in national <tag> $._value = "N"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        O as in oscar <tag> $._value = "O"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        O as in orange <tag> $._value = "O"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        O as in oxygen <tag> $._value = "O"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        P as in papa <tag> $._value = "P"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        P as in Paul <tag> $._value = "P"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        P as in people <tag> $._value = "P"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Q as in quebec <tag> $._value = "Q"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Q as in quite <tag> $._value = "Q"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Q as in question <tag> $._value = "Q"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        R as in romeo <tag> $._value = "R"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        R as in Rachael <tag> $._value = "R"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        R as in Robert <tag> $._value = "R"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        R as in Rex <tag> $._value = "R"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        S as in sierra <tag> $._value = "S"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        S as in sorry <tag> $._value = "S"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        S as in Singapore <tag> $._value = "S"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        T as in tango <tag> $._value = "T"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        T as in telephone <tag> $._value = "T"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        T as in Television <tag> $._value = "T"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        T as in Terry <tag> $._value = "T"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        U as in usual <tag> $._value = "U"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        U as in universe <tag> $._value = "U"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        U as in uniform <tag> $._value = "U"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        V as in victor <tag> $._value = "V"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        V as in visit <tag> $._value = "V"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        V as in violin <tag> $._value = "V"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        W as in wake <tag> $._value = "W"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        W as in washington <tag> $._value = "W"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        W as in whiskey <tag> $._value = "W"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        X as in x-ray <tag> $._value = "X"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        X as in Xerxes <tag> $._value = "X"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        X as in xanax <tag> $._value = "X"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Y as in yellow <tag> $._value = "Y"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Y as in york <tag> $._value = "Y"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Y as in yankee <tag> $._value = "Y"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Y as in young <tag> $._value = "Y"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Z as in zulu <tag> $._value = "Z"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Z as in ziro <tag> $._value = "Z"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        Z as in zombie <tag> $._value = "Z"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        finish <tag> $._value = "finish"; $._attributes.text = $recognized.text;</tag></item>
+      <item>
+        back <tag> $._value = "back"; $._attributes.text = $recognized.text;</tag></item>
+    </one-of>
+  </rule>
+  <!-- spelling Z-->
+  <rule id="listofwords" scope="public">
+    <one-of>
+      <item> Z as in zulu </item>
+      <item> Z as in ziro </item>
+      <item> Z as in zombie </item>
+      <item> Alpha </item>
+      <item> Bravo </item>
+      <item> Charlie </item>
+      <item> Delta </item>
+      <item> Echo </item>
+      <item> Foxtrot </item>
+      <item> Golf </item>
+      <item> Hotel </item>
+      <item> India </item>
+      <item> Juliet </item>
+      <item> Kilo </item>
+      <item> Lima </item>
+      <item> Mike </item>
+      <item> November </item>
+      <item> Oscar </item>
+      <item> Papa </item>
+      <item> Quebec </item>
+      <item> Romeo </item>
+      <item> Sierra </item>
+      <item> Tango </item>
+      <item> Uniform </item>
+      <item> Victor </item>
+      <item> Whiskey </item>
+      <item> Xray </item>
+      <item> Yankee </item>
+      <item> Zulu </item>
+    </one-of>
+  </rule>
+  <!-- Command List - Initializer -->
+  <rule id="goto" scope="public">
+    computer open
+    <item><ruleref uri="#places" /></item></rule>
+  <!-- Choices - lvl2 -->
+  <rule id="places" scope="public">
+    <one-of>
+      <item>
+        music <tag> $._value = "music"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        documents <tag> $._value = "documents"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        pictures <tag> $._value = "pictures"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        tools <tag> $._value = "tools"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        videos <tag> $._value = "videos"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        computer <tag> $._value = "computer"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        desktop <tag> $._value = "desktop"; $._attributes.text = $recognized.text; </tag></item>
+      <item>
+        programs <tag> $._value = "programs"; $._attributes.text = $recognized.text; </tag></item>
+    </one-of>
+  </rule>
+</grammar>
